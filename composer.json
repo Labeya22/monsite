@@ -1,0 +1,23 @@
+{
+    "name": "labeya/monsite",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "Modules\\": "src/Modules/",
+            "Tables\\": "src/Tables/",
+            "Config\\": "Config/",
+            "Query\\": "src/Query/",
+            "Mapping\\": "src/Mapping/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Labeya",
+            "email": "laurentmwn@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "symfony/var-dumper": "^5.4",
+        "phpunit/phpunit": "^9.5"
+    }
+}
