@@ -17,7 +17,11 @@ class Select
 
     private $limit = null;
 
+    private $offset = null;
+
     private $into = null;
+
+    private $count = null;
 
     private $pdo;
 
@@ -40,7 +44,20 @@ class Select
         return $this;
     }
 
+    public function count(string $count = 'id'): self
+    {
+        $this->count = "COUNT($count)";
 
+        return $this;
+    }
+
+    
+
+    /**
+     *
+     * @param string ...$select
+     * @return self
+     */
     public function select (string ...$select): self
     {
         $this->select = array_merge($this->select, $select);
@@ -76,14 +93,32 @@ class Select
         return $this;
     }
 
-    public function limit (int $limit = 12): self
+    /**
+     * Permet de limiter les nombres des resultats à la sortie
+     *
+     * @param integer $limit 
+     * @param integer|null $offset
+     * @return self
+     */
+    public function limit (int $limit = 12, ?int $offset = null): self
     {
         $this->limit = $limit;
+
+        // Je vérifie si l'offset est définie
+        if (!is_null($offset)) {
+            // on le définie
+            $this->offset = $offset;
+        }
 
         return $this;
     }
 
     
+    /**
+     * Execution de la requête.
+     *
+     * @return bool|array
+     */
     public function execute()
     {
         $query = $this->__toString();
@@ -108,7 +143,11 @@ class Select
     {
         $query = ['SELECT'];
 
-        if (!empty($this->select)) {
+
+        
+        if (!is_null($this->count)) {
+            $query[] = $this->count;
+        } elseif (!empty($this->select)) {
             $query[] = implode(', ', $this->select);
         } else {
             $query[] = '*';
@@ -124,8 +163,28 @@ class Select
         if (!is_null($this->limit)) {
             $query[] = 'LIMIT';
             $query[] = $this->limit;
+
+            if (!is_null($this->offset)) {
+                $query[] = 'OFFSET';
+                $query[] = $this->offset;
+            }
         }
 
         return implode(' ', $query);
+    }
+
+
+    public function number(): int
+    {
+        // permet de compter les nombres des resultats dans une table.
+        $query = $this->__toString();
+        if (!empty($this->params)) {
+            $requete =  $this->pdo->prepare($query);
+            $requete->execute($this->params);
+        } else {
+            $requete =  $this->pdo->query($query);
+        }
+        
+        return (int)$requete->fetch(PDO::FETCH_NUM)[0];
     }
 }

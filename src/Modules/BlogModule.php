@@ -46,9 +46,9 @@ class BlogModule {
     
 
     public function index() {
-        $posts = $this->post->all();
-        // dd($posts);
-        return $this->renderer->render('blog/index', compact('posts'));
+        $pagine = $this->post->findPagine();
+        
+        return $this->renderer->render('blog/index', compact('pagine'));
     }
 
     public function show (string $id)

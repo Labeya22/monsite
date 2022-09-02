@@ -1,6 +1,6 @@
 <h1  class="mb-3">Mon blog</h1>
 <div class="row gy-3 mb-5">
-    <?php foreach($posts as $post): ?>
+    <?php foreach($pagine->pagine() as $post): ?>
     <div class="col-md-3">
         <div class="card">
             <div class="card-body">
@@ -12,4 +12,7 @@
         </div>
     </div>
     <?php endforeach ?>
+    <nav class="pagination">
+        <ul class="pagination pagination-sm"><?= $pagine->i(3) ?></ul>
+    </nav>
 </div>

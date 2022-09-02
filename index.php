@@ -13,7 +13,8 @@ $render = new Renderer(__DIR__ . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPAR
 define('S', dirname($_SERVER['SCRIPT_NAME']) . "public/assets/");
 
 // instance de router
-$router = new Router($_SERVER['REQUEST_URI']);
+$url = explode('?', $_SERVER['REQUEST_URI']);
+$router = new Router($url[0]);
 
 // les modules à charger
 $modules = [
