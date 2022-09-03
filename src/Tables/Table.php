@@ -5,6 +5,7 @@ namespace Tables;
 use PDO;
 use Query\Select;
 use App\Exceptions\TableException;
+use Query\Delete;
 
 class Table
 {
@@ -37,11 +38,23 @@ class Table
         return new Select($this->pdo);
     }
 
+    public function getDelete(): Delete
+    {
+        return new Delete($this->pdo);
+    }
+
 
     public function all(): array
     {
         return $this->getSelect()->from($this->from)->into($this->mapping)->execute();
     }
+
+
+    public function delete ($id): bool
+    {
+        return $this->getDelete()->from($this->from)->where("id = :id")->params([":id" => $id])->execute();
+    }
+
 
     public function find ($key): array
     {

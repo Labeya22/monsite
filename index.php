@@ -2,6 +2,7 @@
 
 use App\Renderer\Renderer;
 use App\Routes\Router;
+use Modules\AdminModule;
 use Modules\BlogModule;
 use Modules\CategoryModule;
 
@@ -20,6 +21,7 @@ $render->global('router', $router);
 foreach ([
     BlogModule::class,
     CategoryModule::class,
+    AdminModule::class
 ] as $module) {
     new $module($render, $router);
 }

@@ -55,3 +55,19 @@ HTML;
     
     return implode(', ', $links);
 }
+
+function li ($link, $title): string
+{
+    $active = $_SERVER['REQUEST_URI'] == $link ? 'active' : '';
+    return <<< HTML
+    <li class="nav-item">
+        <a class="nav-link {$active}" href="{$link}">{$title}</a>
+    </li>
+HTML;
+}
+
+function r ($link): void
+{
+    header("Location: $link");
+    exit();
+}

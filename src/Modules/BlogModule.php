@@ -36,7 +36,7 @@ class BlogModule {
         
         
         // la route vers l'accueil
-        $router->get('/', [$this, 'index'], 'home');
+        $router->get('/', [$this, 'index'], 'blog.index');
         $router->get('/blog/show-:id', [$this, 'show'], 'blog.show')->regex('id', "[a-z0-9]+");
 
 
