@@ -71,3 +71,11 @@ function r ($link): void
     header("Location: $link");
     exit();
 }
+
+
+function on (): void
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+}

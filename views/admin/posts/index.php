@@ -1,4 +1,8 @@
 <?php
+
+use App\Flash;
+use App\Message;
+
 $title = 'administration des articles';
 
 ?>
@@ -7,6 +11,7 @@ $title = 'administration des articles';
     <div class="col-md-10">
         
         <h1 class="text-muted mb-3">Articles</h1>
+        <?= Message::generate(Flash::instance()->get()) ?>
         <table class="table">
             <thead>
                 <tr>

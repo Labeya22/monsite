@@ -8,6 +8,8 @@ use Tables\postTable;
 use App\Routes\Router;
 use App\Renderer\Renderer;
 use App\Exceptions\NotFoundException;
+use App\Flash;
+use App\Message;
 
 class AdminModule {
 
@@ -66,11 +68,20 @@ class AdminModule {
             throw new NotFoundException("Nous avons pas pu trouver l'article #$id");
         }
 
+        // dump(Message::generate(Flash::instance()->get()));
+        
+        // dd(Flash::instance()->get());
+
+        // die();
+
         if ($this->post->delete($id)) {
+            Flash::instance()->write('success', "l'article #$id a été supprimer avec succès");
             r($this->router->generateUri('admin.posts.index'));
         } else {
+            Flash::instance()->write('danger', "Nous avons pas pu supprimer l'atrticle #$id");
             r($this->router->generateUri('admin.posts.index'));
         }
+
 
     }
 
