@@ -3,7 +3,7 @@
 use App\Renderer\Renderer;
 use App\Routes\Router;
 use Modules\BlogModule;
-use Modules\CssModule;
+use Modules\CategoryModule;
 
 require __DIR__. DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
@@ -19,10 +19,11 @@ $router = new Router($url[0]);
 // les modules à charger
 $modules = [
     BlogModule::class,
-    CssModule::class,
+    CategoryModule::class,
 ];
 
 
+$render->global('router', $router);
 
 foreach ($modules as $module) {
     new $module($render, $router);

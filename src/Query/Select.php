@@ -23,6 +23,10 @@ class Select
 
     private $count = null;
 
+    private $where = [];
+
+    private $join = [];
+
     private $pdo;
 
     public function __construct(PDO $pdo)
@@ -34,10 +38,10 @@ class Select
     /**
      * Envoie les valeurs de paramètres 
      *
-     * @param array ...$params
+     * @param array $params
      * @return self
      */
-    public function params(array ...$params): self
+    public function params(array $params): self
     {
         $this->params = array_merge($this->params, $params);
 
@@ -89,7 +93,16 @@ class Select
 
     public function where(string ...$where): self
     {
+        $this->where = array_merge($this->where, $where);
         
+        return $this;
+    }
+
+    public function join (string ...$join): self
+    {
+        $this->join = array_merge($this->join, $join);
+
+
         return $this;
     }
 
@@ -123,7 +136,6 @@ class Select
     {
         $query = $this->__toString();
 
-
         if (!empty($this->params)) {
             $requete = $this->pdo->prepare($query);
             $requete->execute($this->params);
@@ -156,9 +168,18 @@ class Select
         if (is_null($this->from)) {
             throw new QueryException("vous devez preciser la table à laquelle vous souhaitez appliquer...");
         }
-
         
         $query[] = 'FROM ' .  $this->from;
+
+        if (!empty($this->join)) {
+            $query[] = implode(' ', $this->join);
+        }
+
+        if (!empty($this->where)) {
+            $query[] = 'WHERE';
+            $query[] = '(' . implode(') AND (', $this->where) . ')';
+        }
+
 
         if (!is_null($this->limit)) {
             $query[] = 'LIMIT';

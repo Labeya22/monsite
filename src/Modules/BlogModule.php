@@ -2,6 +2,7 @@
 
 namespace Modules;
 
+use App\Exceptions\NotFoundException;
 use Config\Config;
 use Tables\postTable;
 use App\Routes\Router;
@@ -36,7 +37,7 @@ class BlogModule {
         
         // la route vers l'accueil
         $router->get('/', [$this, 'index'], 'home');
-        $router->get('/blog/show-:id', [$this, 'show'], 'blog.show')->regex('id', "[a-z]+");
+        $router->get('/blog/show-:id', [$this, 'show'], 'blog.show')->regex('id', "[a-z0-9]+");
 
 
         $this->post = new postTable(Config::getPDO());
@@ -53,6 +54,16 @@ class BlogModule {
 
     public function show (string $id)
     {  
-        return $this->renderer->render('blog/show');
+        $find = $this->post->find($id);
+        if (empty($find)) {
+            throw new NotFoundException("Nous avons pas pu trouver l'article #$id");
+        }
+
+
+        $categories = $this->post->findCategoryAssoc($id);
+
+        // dd($categories);
+
+        return $this->renderer->render('blog/show', compact('find', 'categories'));
     }
 }
