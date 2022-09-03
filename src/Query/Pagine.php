@@ -64,18 +64,18 @@ class Pagine
         $link = '';
 
         for ($i = ($this->currentPage - $limit); $i <= $this->currentPage - 1; $i++) {
-            $uri = Helpers::params('page', $i);
+            $uri = params('page', $i);
             if ($i > 0) {
                 $link .= "<li class=\"page-item\"><a href=\"{$uri}\" class=\"page-link\">{$i}</a></li>";
             }
         }
 
-        $uri = Helpers::params('page',$this->currentPage);
+        $uri = params('page',$this->currentPage);
         $link .= "<li class=\"page-item active\"><a href=\"{$uri}\" class=\"page-link\"  aria-current=\"{$this->currentPage}\">{$this->currentPage}</a></li>";
         
 
         for ($i = ($this->currentPage + 1); $i <= ($this->currentPage + $limit); $i++) {
-            $uri = Helpers::params('page', $i);
+            $uri = params('page', $i);
             if ($i <= $this->pages) {
                 $link .= "<li class=\"page-item\"><a href=\"{$uri}\" class=\"page-link\">{$i}</a></li>";
             }

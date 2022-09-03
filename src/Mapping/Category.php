@@ -14,6 +14,9 @@ class Category
 
     private $createAt;
 
+    private $post_id;
+
+
     /**
      * Get the value of category
      */ 
@@ -82,5 +85,25 @@ class Category
         }
 
         return $this->createAt;
+    }
+
+    /**
+     * Get the value of post_id
+     */ 
+    public function getPostId()
+    {
+        return $this->post_id;
+    }
+
+    /**
+     * Set the value of post_id
+     *
+     * @return  self
+     */ 
+    public function setPostId($post_id)
+    {
+        $this->post_id = $post_id;
+
+        return $this;
     }
 }

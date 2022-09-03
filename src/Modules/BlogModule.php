@@ -47,9 +47,25 @@ class BlogModule {
     
 
     public function index() {
+
         $pagine = $this->post->findPagine();
+        $posts = $pagine->pagine();
+        $category_assoc = [];
+        $paginate = $pagine->i(3);
+
+        if (!empty($posts)) {
+            foreach($posts as $post) {
+                $category_assoc[$post->getId()] = $post;
+            }
+
+            $categories = $this->post->category_assoc(['in' => array_keys($category_assoc)]);
         
-        return $this->renderer->render('blog/index', compact('pagine'));
+            foreach ($categories as $category) {
+                $category_assoc[$category->getPostId()]->setCategory($category);
+            }    
+        }
+
+        return $this->renderer->render('blog/index', compact('posts', 'paginate'));
     }
 
     public function show (string $id)
@@ -61,9 +77,7 @@ class BlogModule {
 
 
         $categories = $this->post->findCategoryAssoc($id);
-
-        // dd($categories);
-
+        
         return $this->renderer->render('blog/show', compact('find', 'categories'));
     }
 }

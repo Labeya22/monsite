@@ -16,6 +16,9 @@ class Post
 
     private $id;
 
+    private $category = [];
+
+
     /**
      * Get the value of name
      */ 
@@ -96,5 +99,26 @@ class Post
         }
 
         return $this->createAt;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Category[]
+     */
+    public function getCategory(): array
+    {
+        return $this->category;
+    }
+
+
+    /**
+     *
+     * @param Category $category
+     * @return void
+     */
+    public function setCategory(Category $category)
+    {
+        $this->category[] = $category;
     }
 }

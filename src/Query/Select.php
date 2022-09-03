@@ -27,12 +27,15 @@ class Select
 
     private $join = [];
 
+    private $in = [];
+
     private $pdo;
 
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
+    
 
 
     /**
@@ -53,6 +56,14 @@ class Select
         $this->count = "COUNT($count)";
 
         return $this;
+    }
+
+    public function in (string $key, string $in): self
+    {
+        $this->where = array_merge($this->where, ["$key IN ($in)"]);
+
+        return $this;
+
     }
 
     

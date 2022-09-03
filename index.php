@@ -16,16 +16,11 @@ define('S', dirname($_SERVER['SCRIPT_NAME']) . "public/assets/");
 $url = explode('?', $_SERVER['REQUEST_URI']);
 $router = new Router($url[0]);
 
-// les modules à charger
-$modules = [
+$render->global('router', $router);
+foreach ([
     BlogModule::class,
     CategoryModule::class,
-];
-
-
-$render->global('router', $router);
-
-foreach ($modules as $module) {
+] as $module) {
     new $module($render, $router);
 }
 

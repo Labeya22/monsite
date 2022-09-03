@@ -13,6 +13,10 @@ class postTable extends Table
 
     private $category = Category::class;
 
+    private $assoc = 'post_category';
+
+    private $to = 'categories';
+
     protected $mapping = Post::class;
     
 
@@ -30,7 +34,27 @@ class postTable extends Table
             ->count()->number();
         
 
-        return new Pagine($query, $count, Helpers::getParams('page'));
+        return new Pagine($query, $count, getParams('page'));
+    }
+
+
+    /**
+     *
+     * @param array $parameters
+     * @return Category[]
+     */
+    public function category_assoc(array $parameters): array
+    {
+        $merge = array_map(function ($id) {
+            return "'$id'";
+        }, $parameters['in']);
+        return $this->getSelect()
+        ->select("c.*", 'pc.post_id')
+        ->from($this->assoc, 'pc')
+        ->join("JOIN  {$this->to} c ON c.id = pc.category_id")
+        ->in('pc.post_id', implode(', ', $merge))
+        ->into($this->category)
+        ->execute();
     }
 
 
