@@ -29,6 +29,8 @@ class Select
 
     private $in = [];
 
+    private $by = [];
+
     private $pdo;
 
     public function __construct(PDO $pdo)
@@ -105,6 +107,13 @@ class Select
     public function where(string ...$where): self
     {
         $this->where = array_merge($this->where, $where);
+        
+        return $this;
+    }
+
+    public function by(string ...$by): self
+    {
+        $this->by = array_merge($this->by, $by);
         
         return $this;
     }
@@ -190,6 +199,11 @@ class Select
             $query[] = 'WHERE';
             $query[] = '(' . implode(') AND (', $this->where) . ')';
         }
+        
+        if (!empty($this->by)) {
+            $query[] = 'ORDER BY';
+            $query[] = implode(', ', $this->by);
+        }
 
 
         if (!is_null($this->limit)) {
@@ -202,6 +216,8 @@ class Select
             }
         }
 
+        
+     
         return implode(' ', $query);
     }
 

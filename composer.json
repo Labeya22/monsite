@@ -10,7 +10,10 @@
             "Tables\\": "src/Tables/",
             "Config\\": "Config/",
             "Query\\": "src/Query/",
-            "Mapping\\": "src/Mapping/"
+            "Mapping\\": "src/Mapping/",
+            "Forms\\": "src/Forms/",
+            "Validator\\": "src/Validator/",
+            "Validations\\": "src/Validations/"
         }
     },
 

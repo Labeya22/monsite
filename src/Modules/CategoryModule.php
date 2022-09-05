@@ -43,7 +43,7 @@ class CategoryModule
 
 
     public function show ($category){
-        $find = $this->category->find($category);
+        $find = $this->category->find('id', $category);
 
         if (empty($find)) {
             throw new NotFoundException("Nous avons pas pu trouver la categorie #$category");

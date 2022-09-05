@@ -34,6 +34,7 @@ class CategoryTable extends Table
             ->from($this->to, 'p')
             ->join("JOIN {$this->join} pc ON pc.post_id = p.id")
             ->where("pc.category_id = :id")
+            ->by('id DESC', 'createAt DESC')
             ->params([':id' => $parameters['id']])
             ->count('p.id')->number();
         

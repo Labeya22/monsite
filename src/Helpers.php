@@ -3,14 +3,23 @@
 use App\Routes\Router;
 use Mapping\Category;
 
-function hydrate($instance, $data): array
+function hydrate(Object $instance, array $data, array $hydrates): void
 {
-    $hydrate = [];
-    foreach($data as $k => $v) {
+    foreach($hydrates as $key) {
+        $setter = setter($key);
         
+        if (!method_exists($instance, $setter)) {
+            throw new Exception("la methode $setter n'existe pas");
+            die();
+        } else {
+            $instance->$setter($data[$key]);
+        }
     }
+}
 
-    return $hydrate;
+function setter($key): string
+{
+    return 'set' . ucfirst($key);
 }
 
 function params($key, $value): string

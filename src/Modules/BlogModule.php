@@ -70,7 +70,7 @@ class BlogModule {
 
     public function show (string $id)
     {  
-        $find = $this->post->find($id);
+        $find = $this->post->find('id', $id);
         if (empty($find)) {
             throw new NotFoundException("Nous avons pas pu trouver l'article #$id");
         }

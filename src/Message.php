@@ -26,4 +26,17 @@ class Message
 
         return null;
     }
+
+
+    static function feedback($key, $errors = []): array
+    {
+        $has = '';
+        $error = '';
+        if (!empty($errors) && isset($errors[$key])) {
+            $has = 'is-invalid';
+            $error = " <div class=\"invalid-feedback\">" . implode('<br>', $errors[$key]) . "</div>";
+        }
+
+        return [$has, $error];
+    }
 }

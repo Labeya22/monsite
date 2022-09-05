@@ -24,13 +24,17 @@ $title = 'administration des articles';
                 <tr>
                     <td><a href="<?= $router->generateUri('admin.posts.post', [
                         'id' => $post->getId()
-                    ]) ?>"><?= e($post->getName()) ?></a></td>
+                    ]) ?>"><?= e($post->getName()) ?></a>
                     <td>
                         <div class="btn-group">
-                            <a href="" class="btn btn-sm btn-secondary" style="font-size: 14px;"> Editer</a>
-                            <a href="<?= $router->generateUri('admin.post.delete', [
+                            <a href="<?= $router->generateUri('admin.post.editer', [
                                 'id' => $post->getId()
-                            ]) ?>" class="btn btn-sm btn-danger" style="font-size: 14px;" onclick="confirm('Vous voulez vraiment supprimer cet article ? ')"> Supprimer</a>
+                            ]) ?>" class="btn btn-sm btn-secondary" style="font-size: 14px;"> Editer</a>
+                            <form action="<?= $router->generateUri('admin.post.delete', [
+                                'id' => $post->getId()
+                            ]) ?>" method="post" style="display: inline-block;">
+                                <button type="submit" class="btn btn-sm btn-danger" style="font-size: 14px;" onclick="confirm('Vous voulez vraiment supprimer cet article ? ')">Supprimer</button>
+                            </form>
                         </div>
                     </td>
                 </tr>

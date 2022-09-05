@@ -18,6 +18,23 @@ class postTable extends Table
     private $to = 'categories';
 
     protected $mapping = Post::class;
+
+
+    public function editer(Post $post): bool
+    {
+        return $this->getUpdate()
+            ->from($this->from)
+            ->update('name = :name', 'slug = :slug', 'content = :content', 'createAt = :createAt')
+            ->where('id = :id')
+            ->params([
+                ':id' => $post->getId(),
+                ':name' => $post->getName(),
+                ':slug' => $post->getSlug(),
+                ':content' => $post->getContent(),
+                ':createAt' => $post->getCreateAt()->format('Y-m-d H:m:s')
+            ])
+        ->execute();
+    }
     
 
     public function findPagine(array $parameters = []): Pagine
@@ -26,6 +43,7 @@ class postTable extends Table
         $query = $this
             ->getSelect()
             ->from($this->from)
+            ->by('id DESC', 'createAt DESC')
             ->into($this->mapping);
         
         $count =  $this

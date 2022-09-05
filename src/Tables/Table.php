@@ -6,6 +6,7 @@ use PDO;
 use Query\Select;
 use App\Exceptions\TableException;
 use Query\Delete;
+use Query\Update;
 
 class Table
 {
@@ -43,6 +44,11 @@ class Table
         return new Delete($this->pdo);
     }
 
+    public function getUpdate(): Update
+    {
+        return new Update($this->pdo);
+    }
+
 
     public function all(): array
     {
@@ -56,15 +62,17 @@ class Table
     }
 
 
-    public function find ($key): array
+    public function find (string $field, string $value, $index = null): array
     {
         $query =  $this->getSelect()->from($this->from)->into($this->mapping);
-        if (is_array($key)) {
-            foreach ($key as $k => $v) {
-                $query->where("$k = :$k")->params([":$k" => $v]);
-            }
+        if (is_null($index)) {
+            $query->where("$field = :$field")->params([":$field" => $value]);
         } else {
-            $query->where('id = :id')->params([':id' => $key]);
+            $query
+            ->where("$field = :$field")
+            ->where("id != :id")
+            ->params([":$field" => $value])
+            ->params([":id" => $index]);
         }
 
         return $query->execute();
