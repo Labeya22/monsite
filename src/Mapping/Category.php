@@ -78,15 +78,25 @@ class Category
     }
 
     
+
     public function getCreateAt(): ?DateTime
     {
+        $createAt = null;
         if (!is_null($this->createAt)) {
-           return new DateTime($this->createAt);
+            try {
+                $createAt = new DateTime($this->createAt);
+            } catch (\Exception $e) {
+                $createAt = new DateTime();
+            }
         }
 
-        return $this->createAt;
+        return $createAt;
     }
 
+    public function setCreateAt($createAt): void
+    {
+        $this->createAt = $createAt;
+    }
     /**
      * Get the value of post_id
      */ 

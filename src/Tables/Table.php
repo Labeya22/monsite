@@ -6,6 +6,7 @@ use PDO;
 use Query\Select;
 use App\Exceptions\TableException;
 use Query\Delete;
+use Query\Insert;
 use Query\Update;
 
 class Table
@@ -47,6 +48,11 @@ class Table
     public function getUpdate(): Update
     {
         return new Update($this->pdo);
+    }
+
+    public function getInsert(): Insert
+    {
+        return new Insert($this->pdo);
     }
 
 

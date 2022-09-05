@@ -2,10 +2,10 @@
 
 namespace Validations;
 
-use Tables\postTable;
+use Tables\CategoryTable;
 use Validator\Validator;
 
-class PostValidator
+class CategoryValidator
 {
     /**
      * @var Validator
@@ -16,24 +16,22 @@ class PostValidator
      *
      * @param array $data
      */
-    public function __construct(array $data =  [], ?postTable $post = null, $postId = null)
+    public function __construct(array $data =  [], ?CategoryTable $post = null, $categoryId = null)
     {
         $this->validator = new Validator($data);
 
         // pour les champs vide
         $this->validator
+            ->isEmpty('category')
             ->isEmpty('slug')
-            ->isEmpty('content')
             ->min('slug')
-            ->min('name')
-            ->min('content')
-            ->isEmpty('name')
+            ->min('category')
             ->slug('slug');
         
-        if (!is_null($postId)) {
-            $this->validator->unique($post, ['slug', 'name'], $postId);
+        if (!is_null($categoryId)) {
+            $this->validator->unique($post, ['slug', 'category'], $categoryId);
         } else {
-            $this->validator->unique($post, ['slug', 'name']);
+            $this->validator->unique($post, ['category', 'slug']);
         }
     }
 

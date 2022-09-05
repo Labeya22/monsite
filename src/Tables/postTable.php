@@ -35,6 +35,20 @@ class postTable extends Table
             ])
         ->execute();
     }
+
+    public function create(Post $post): bool
+    {
+        return $this->getInsert()
+            ->from($this->from)
+            ->insert('name = :name', 'slug = :slug', 'content = :content', 'createAt = NOW()', 'id = :id')
+            ->params([
+                ':id' => token(24),
+                ':name' => $post->getName(),
+                ':slug' => $post->getSlug(),
+                ':content' => $post->getContent()
+            ])
+        ->execute();
+    }
     
 
     public function findPagine(array $parameters = []): Pagine

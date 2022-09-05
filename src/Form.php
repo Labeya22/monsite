@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Forms;
+namespace App;
 
 use App\Message;
 use DateTimeInterface;

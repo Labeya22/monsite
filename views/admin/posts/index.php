@@ -17,14 +17,16 @@ $title = 'administration des articles';
                 <tr>
                     <th>Titre</th>
                     <th>Actions</th>
+                    <td><a href="<?= $router->generateUri('admin.post.create')?>" class="btn btn-primary btn-sm">Nouveau</a></td>
+
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($posts as $post): ?>
                 <tr>
-                    <td><a href="<?= $router->generateUri('admin.posts.post', [
+                    <td><a href="<?= $router->generateUri('admin.posts.show', [
                         'id' => $post->getId()
-                    ]) ?>"><?= e($post->getName()) ?></a>
+                    ]) ?>" style="text-decoration: none; opacity: .80;" title="Voir l'article <?= e($post->getName())  ?>"><?= e($post->getName()) ?></a>
                     <td>
                         <div class="btn-group">
                             <a href="<?= $router->generateUri('admin.post.editer', [
@@ -33,7 +35,7 @@ $title = 'administration des articles';
                             <form action="<?= $router->generateUri('admin.post.delete', [
                                 'id' => $post->getId()
                             ]) ?>" method="post" style="display: inline-block;">
-                                <button type="submit" class="btn btn-sm btn-danger" style="font-size: 14px;" onclick="confirm('Vous voulez vraiment supprimer cet article ? ')">Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-danger" style="font-size: 14px;" onclick="return confirm('Vous voulez vraiment supprimer cet article ? ')">Supprimer</button>
                             </form>
                         </div>
                     </td>

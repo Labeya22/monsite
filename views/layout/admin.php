@@ -22,6 +22,7 @@
             </li>
            
             <?= li($router->generateUri('admin.posts.index'), 'Articles') ?>
+            <?= li($router->generateUri('admin.categories.index'), 'Categories') ?>
             </ul>
         </div>
         </div>

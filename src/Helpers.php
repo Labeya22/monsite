@@ -65,8 +65,7 @@ HTML;
     return implode(', ', $links);
 }
 
-function li ($link, $title): string
-{
+function li ($link, $title): string {
     $active = $_SERVER['REQUEST_URI'] == $link ? 'active' : '';
     return <<< HTML
     <li class="nav-item">
@@ -75,16 +74,19 @@ function li ($link, $title): string
 HTML;
 }
 
-function r ($link): void
-{
+function r ($link): void {
     header("Location: $link");
     exit();
 }
 
 
-function on (): void
-{
+function on (): void {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
+}
+
+function token($length = 6): string {
+    $alphabet = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQSTUVWXYZ';
+    return substr(str_shuffle(str_repeat($alphabet, $length)), 0, $length);
 }

@@ -37,7 +37,7 @@ class BlogModule {
         
         // la route vers l'accueil
         $router->get('/', [$this, 'index'], 'blog.index');
-        $router->get('/blog/show-:id', [$this, 'show'], 'blog.show')->regex('id', "[a-z0-9]+");
+        $router->get('/blog/show-:id', [$this, 'show'], 'blog.show')->regex('id', "[a-zA-Z0-9]+");
 
 
         $this->post = new postTable(Config::getPDO());

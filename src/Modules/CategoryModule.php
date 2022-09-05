@@ -35,7 +35,7 @@ class CategoryModule
         
         
         // la route vers asset
-        $router->get('/category/:category.html', [$this, 'show'], 'category.show')->regex('category', "[a-z0-9]+");
+        $router->get('/category/:category.html', [$this, 'show'], 'category.show')->regex('category', "[a-zA-Z0-9]+");
 
         $this->category = new CategoryTable(Config::getPDO());
         $this->post = new postTable(Config::getPDO());

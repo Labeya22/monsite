@@ -34,6 +34,17 @@ class Validator
         return $this;
     }
 
+    public function min($key, $min = 3): self
+    {
+        $value = $this->getValue($key);
+        if (strlen($value) < $min) {
+            $this->Errors('min', $key, [$min]);
+        }
+
+        return $this;
+
+    }
+
     /**
      *
      * @param Table $instance
