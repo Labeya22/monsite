@@ -17,7 +17,6 @@ $form = new Form($post[0], $errors);
     <div class="col-md-5">
         <form action="" method="post">
             <div class="form-group mb-2"><?= $form->field('name', 'article', ['holder' => 'Entrer un article']) ?></div>
-            <div class="form-group mb-2"><?= $form->field('slug', 'slug', ['holder' => 'Entrer un url']) ?></div>
             <div class="form-group mb-2"><?= $form->field('createAt', 'createAt', ['holder' => 'date de création']) ?></div>
             <div class="form-group mb-2"><?= $form->field('content', 'contenu', ['type' => 'textarea']) ?></div>
             <?= $form->submit('Editer') ?>

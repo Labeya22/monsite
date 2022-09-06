@@ -11,12 +11,11 @@ $title = 'administration des categories';
         
         <h1 class="text-muted mb-3">Categories</h1>
         <?= Message::generate(Flash::instance()->get()) ?>
-        <table class="table table-sm">
+        <table class="table table-sm table-striped">
             <thead>
                 <tr>
                     <th>Titre</th>
-                    <th>Actions</th>
-                    <td><a href="<?= $router->generateUri('admin.category.create')?>" class="btn btn-primary btn-sm">Nouveau</a></td>
+                    <th><a href="<?= $router->generateUri('admin.category.create')?>" class="btn btn-primary btn-sm">Nouveau</a></th>
                 </tr>
             </thead>
             <tbody>

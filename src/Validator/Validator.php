@@ -73,6 +73,25 @@ class Validator
         return $this;
     }
 
+    public function uniques($instance, $keys, $message,  $indexes = null): self
+    {
+        $fields = [];
+
+        foreach ($keys as $k) {
+            $value = $this->getValue($k);
+            $fields[$k] = $value;
+        }
+
+        if (!empty($instance->findAll($fields, $indexes))) {
+            $this->Errors('unique', 'both', [$message]);
+        }
+
+
+
+        return $this;
+
+    }
+
 
     private function getValue($key): string
     {

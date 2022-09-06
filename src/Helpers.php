@@ -10,7 +10,6 @@ function hydrate(Object $instance, array $data, array $hydrates): void
         
         if (!method_exists($instance, $setter)) {
             throw new Exception("la methode $setter n'existe pas");
-            die();
         } else {
             $instance->$setter($data[$key]);
         }
@@ -19,7 +18,7 @@ function hydrate(Object $instance, array $data, array $hydrates): void
 
 function setter($key): string
 {
-    return 'set' . ucfirst($key);
+    return 'set' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
 }
 
 function params($key, $value): string

@@ -3,8 +3,15 @@
 
 Créer un blog avec un système de categorie
 
-- page listing d'article (pagination)
-- page listing articles pour une categorie (pagination)
-- page representation d'article
-- administration articles
-- administration categories
+[x] page listing d'article (pagination)
+[x] page listing articles pour une categorie (pagination)
+[x] page representation d'article
+[x] administration articles
+[x] administration categories
+[x] page de liaison d'un article à une categorie
+    [x] listing relations avec pagination
+    [x] supprimer la relation
+    [x] modifier la relation
+    [x] Ajouter une relation
+
+[] Système d'authentification

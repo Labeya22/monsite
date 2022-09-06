@@ -24,12 +24,11 @@ class postTable extends Table
     {
         return $this->getUpdate()
             ->from($this->from)
-            ->update('name = :name', 'slug = :slug', 'content = :content', 'createAt = :createAt')
+            ->update('name = :name', 'content = :content', 'createAt = :createAt')
             ->where('id = :id')
             ->params([
                 ':id' => $post->getId(),
                 ':name' => $post->getName(),
-                ':slug' => $post->getSlug(),
                 ':content' => $post->getContent(),
                 ':createAt' => $post->getCreateAt()->format('Y-m-d H:m:s')
             ])
@@ -40,11 +39,10 @@ class postTable extends Table
     {
         return $this->getInsert()
             ->from($this->from)
-            ->insert('name = :name', 'slug = :slug', 'content = :content', 'createAt = NOW()', 'id = :id')
+            ->insert('name = :name', 'content = :content', 'createAt = NOW()', 'id = :id')
             ->params([
                 ':id' => token(24),
                 ':name' => $post->getName(),
-                ':slug' => $post->getSlug(),
                 ':content' => $post->getContent()
             ])
         ->execute();
@@ -93,7 +91,7 @@ class postTable extends Table
     public function findCategoryAssoc($id): array
     {
         return $this->getSelect()
-        ->select('c.id', 'c.category', 'c.slug', 'c.createAt')
+        ->select('c.id', 'c.category', 'c.createAt')
         ->from('post_category', 'pc')
         ->into($this->category)
         ->join("JOIN categories c ON c.id = pc.category_id")

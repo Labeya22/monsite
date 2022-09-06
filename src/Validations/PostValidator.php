@@ -22,18 +22,15 @@ class PostValidator
 
         // pour les champs vide
         $this->validator
-            ->isEmpty('slug')
             ->isEmpty('content')
-            ->min('slug')
             ->min('name')
             ->min('content')
-            ->isEmpty('name')
-            ->slug('slug');
+            ->isEmpty('name');
         
         if (!is_null($postId)) {
-            $this->validator->unique($post, ['slug', 'name'], $postId);
+            $this->validator->unique($post, ['name'], $postId);
         } else {
-            $this->validator->unique($post, ['slug', 'name']);
+            $this->validator->unique($post, ['name']);
         }
     }
 

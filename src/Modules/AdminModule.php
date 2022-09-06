@@ -4,15 +4,15 @@ namespace Modules;
 
 
 use App\Flash;
-use Mapping\{Post, Category};
+use Mapping\{Post, Category, PostCategory};
 use Config\Config;
-use Tables\postTable;
 use App\Routes\Router;
 use App\Renderer\Renderer;
 use Validations\PostValidator;
 use App\Exceptions\NotFoundException;
-use Tables\CategoryTable;
 use Validations\CategoryValidator;
+use Tables\{PostCategoryTable, CategoryTable, postTable};
+use Validations\RelationValidator;
 
 class AdminModule {
 
@@ -37,6 +37,11 @@ class AdminModule {
     private $category;
 
     /**
+     * @var PostCategoryTable
+     */
+    private $relation;
+
+    /**
      * @param Renderer $render
      * @param Router $router
      */
@@ -46,21 +51,30 @@ class AdminModule {
         $this->router = $router;
 
         // POSTS
-        $this->router->get('/admin/posts/index.html', [$this, 'posts'], 'admin.posts.index');
+        $this->router->get('/admin/posts.html', [$this, 'posts'], 'admin.posts.index');
         $this->router->get('/admin/posts/post-:id.html', [$this, 'post'], 'admin.posts.show')->regex('id', "[a-zA-Z0-9]+");
         $this->router->both('/admin/posts/delete-:id.html', [$this, 'post_delete'], 'admin.post.delete')->regex('id', "[a-zA-Z0-9]+");
         $this->router->both('/admin/posts/edit-:id.html', [$this, 'post_editer'], 'admin.post.editer')->regex('id', "[a-zA-Z0-9]+");
         $this->router->both('/admin/posts/create.html', [$this, 'post_create'], 'admin.post.create');
 
         // CATEGORIES
-        $this->router->get('/admin/categories/index.html', [$this, 'categories'], 'admin.categories.index');
+        $this->router->get('/admin/categories.html', [$this, 'categories'], 'admin.categories.index');
         $this->router->both('/admin/categories/delete-:id.html', [$this, 'category_delete'], 'admin.category.delete')->regex('id', "[a-zA-Z0-9]+");
         $this->router->both('/admin/categories/edit-:id.html', [$this, 'category_editer'], 'admin.category.editer')->regex('id', "[a-zA-Z0-9]+");
         $this->router->both('/admin/categories/create.html', [$this, 'category_create'], 'admin.category.create');
         $this->router->both('/admin/categories/show-:id.html', [$this, 'category'], 'admin.categories.show')->regex('id', "[a-zA-Z0-9]+");
 
+
+        // RELATIONS
+        $this->router->both('/admin/relations.html', [$this, 'relations'], 'admin.relations.index');
+        $this->router->both('/admin/relations/create', [$this, 'relation_create'], 'admin.relation.create');
+        $this->router->both('/admin/relations/delete-:id.html', [$this, 'relation_delete'], 'admin.relation.delete');
+        $this->router->both('/admin/relations/editer-:id.html', [$this, 'relation_editer'], 'admin.relation.editer');
+
+
         $this->post = new postTable(Config::getPDO());
         $this->category = new CategoryTable(Config::getPDO());
+        $this->relation = new PostCategoryTable(Config::getPDO());
         
     }
 
@@ -109,7 +123,7 @@ class AdminModule {
 
         $errors = [];
         if (!empty($_POST)) {
-            hydrate($post[0], $_POST, ['name', 'slug', 'content', 'createAt']);
+            hydrate($post[0], $_POST, ['name', 'content', 'createAt']);
             $validator = new PostValidator($_POST, $this->post, $post[0]->getId());
             
             if (!$validator->validate()) {
@@ -131,7 +145,7 @@ class AdminModule {
         $post = new Post();
         $errors = [];
         if (!empty($_POST)) {
-            hydrate($post, $_POST, ['name', 'slug', 'content']);
+            hydrate($post, $_POST, ['name', 'content']);
             $validator = new PostValidator($_POST, $this->post);
             
             if (!$validator->validate()) {
@@ -191,7 +205,7 @@ class AdminModule {
 
         $errors = [];
         if (!empty($_POST)) {
-            hydrate($category[0], $_POST, ['category', 'slug', 'createAt']);
+            hydrate($category[0], $_POST, ['category', 'createAt']);
             $validator = new CategoryValidator($_POST, $this->category, $category[0]->getId());
 
             if (!$validator->validate()) {
@@ -214,7 +228,7 @@ class AdminModule {
         $errors = [];
         $category = new Category();
         if (!empty($_POST)) {
-            hydrate($category, $_POST, ['category', 'slug']);
+            hydrate($category, $_POST, ['category']);
             $validator = new CategoryValidator($_POST, $this->category);
 
             if (!$validator->validate()) {
@@ -232,4 +246,88 @@ class AdminModule {
 
     }
 
+    public function relations()
+    {   
+        $pagine = $this->relation->findPagine(['page' => getParams('page')]);
+        $relations = $pagine->pagine();
+        $paginate = $pagine->i(4);
+
+        return $this->renderer->render('admin/relations/index', compact('relations', 'paginate'), 'admin');
+    }
+
+    public function relation_create()
+    {
+        $errors = [];
+        $relation = new PostCategory;
+
+
+        if (!empty($_POST)) {
+            hydrate($relation, $_POST, ['post_id', 'category_id']);
+            $validator = new RelationValidator($_POST, $this->relation, null);
+
+            if (!$validator->validate()) {
+                $errors = $validator->getErrors();
+                if (array_key_exists('both', $errors)) {
+                    Flash::instance()->write('danger', implode('<br>', $errors['both']));
+                }
+            }else {
+                if ($this->relation->create($relation)) {
+                    Flash::instance()->write('success', "Une relation a été ajouter avec succès");
+                    r($this->router->generateUri('admin.relations.index'));
+                }
+            }
+        }
+
+
+        $categories = $this->category->all(['id', 'category']);
+        $posts = $this->post->all(['id', 'name']);
+        return $this->renderer->render('admin/relations/create', compact('posts', 'errors', 'categories', 'relation'), 'admin');
+    }
+
+    public function relation_delete(string $id)
+    {
+        $relation = $this->relation->find('id', $id);
+        if (empty($relation)) {
+            throw new NotFoundException("Nous avons pas pu trouver la relation #$id");
+        }
+
+        if ($this->relation->delete($relation[0]->getId())) {
+            Flash::instance()->write('success', "la relation #$id a été supprimer avec succès");
+            r($this->router->generateUri('admin.relations.index'));
+        } else {
+            Flash::instance()->write('danger', "Nous avons pas pu supprimer la relation #$id");
+            r($this->router->generateUri('admin.relations.index'));
+        }
+    }
+
+    public function relation_editer(string $id)
+    {
+        $relation = $this->relation->find('id', $id);
+        if (empty($relation)) {
+            throw new NotFoundException("Nous avons pas pu trouver la relation #$id");
+        }
+
+        $errors = [];
+        if (!empty($_POST)) {
+            hydrate($relation[0], $_POST, ['post_id', 'category_id']);
+            $validator = new RelationValidator($_POST, $this->relation, $relation[0]->getId());
+
+            if (!$validator->validate()) {
+                $errors = $validator->getErrors();
+                if (array_key_exists('both', $errors)) {
+                    Flash::instance()->write('danger', implode('<br>', $errors['both']));
+                }
+            }else {
+                if ($this->relation->editer($relation[0])) {
+                    Flash::instance()->write('success', "La relation #$id a été mis à jour");
+                    r($this->router->generateUri('admin.relations.index'));
+                }
+            }
+        }
+
+        $categories = $this->category->all(['id', 'category']);
+        $posts = $this->post->all(['id', 'name']);
+        
+        return $this->renderer->render('admin/relations/editer', compact('relation', 'errors', 'categories', 'posts'), 'admin');
+    }
 }

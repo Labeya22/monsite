@@ -18,7 +18,6 @@ DROP TABLE post_category;
 CREATE TABLE posts (
     id VARCHAR(20) NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    slug VARCHAR(255) NOT NULL,
     content TEXT(650000) NOT NULL,
     createAt DATETIME NOT NULL
 );
@@ -27,7 +26,6 @@ CREATE TABLE posts (
 CREATE TABLE categories (
     id VARCHAR(20) NOT NULL PRIMARY KEY,
     category VARCHAR(255) NOT NULL,
-    slug VARCHAR(255) NOT NULL,
     createAt DATETIME NOT NULL
 );
 

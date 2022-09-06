@@ -155,6 +155,8 @@ class Select
     public function execute()
     {
         $query = $this->__toString();
+        
+
 
         if (!empty($this->params)) {
             $requete = $this->pdo->prepare($query);

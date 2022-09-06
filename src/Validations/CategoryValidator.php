@@ -23,15 +23,12 @@ class CategoryValidator
         // pour les champs vide
         $this->validator
             ->isEmpty('category')
-            ->isEmpty('slug')
-            ->min('slug')
-            ->min('category')
-            ->slug('slug');
+            ->min('category');
         
         if (!is_null($categoryId)) {
-            $this->validator->unique($post, ['slug', 'category'], $categoryId);
+            $this->validator->unique($post, ['category'], $categoryId);
         } else {
-            $this->validator->unique($post, ['category', 'slug']);
+            $this->validator->unique($post, ['category']);
         }
     }
 

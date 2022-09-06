@@ -56,9 +56,13 @@ class Table
     }
 
 
-    public function all(): array
+    public function all(array $fields = []): array
     {
-        return $this->getSelect()->from($this->from)->into($this->mapping)->execute();
+        $field = '*';
+        if (!empty($fields)) {
+            $field = implode(', ', $fields);
+        }
+        return $this->getSelect()->select($field)->from($this->from)->execute();
     }
 
 
@@ -83,4 +87,5 @@ class Table
 
         return $query->execute();
     }
+
 }

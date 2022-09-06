@@ -14,6 +14,7 @@ class ValidatorError
         'empty' => "est requis",
         'slug' => "doit  avoir que %s.",
         'unique' => "cette valeur est déjà utilisées",
+        'uniques' => "%s",
         'min' => "doit avoir au moins %i catectères",
         'max' => "ne doit pas depasser %i catectères",
         'between' => "doit avoir entre %i et %i catectères"

@@ -64,12 +64,11 @@ class CategoryTable extends Table
     {
         return $this->getUpdate()
             ->from($this->from)
-            ->update('category = :category', 'slug = :slug', 'createAt = :createAt')
+            ->update('category = :category', 'createAt = :createAt')
             ->where('id = :id')
             ->params([
                 ':id' => $category->getId(),
                 ':category' => $category->getCategory(),
-                ':slug' => $category->getSlug(),
                 ':createAt' => $category->getCreateAt()->format('Y-m-d H:m:s')
             ])
         ->execute();
@@ -79,11 +78,10 @@ class CategoryTable extends Table
     {
         return $this->getInsert()
             ->from($this->from)
-            ->insert('category = :category', 'slug = :slug', 'createAt = NOW()', 'id = :id')
+            ->insert('category = :category', 'createAt = NOW()', 'id = :id')
             ->params([
                 ':id' => token(24),
-                ':category' => $category->getCategory(),
-                ':slug' => $category->getSlug()
+                ':category' => $category->getCategory()
             ])
         ->execute();
     }

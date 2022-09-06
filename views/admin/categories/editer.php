@@ -17,7 +17,6 @@ $form = new Form($category[0], $errors);
     <div class="col-md-5">
         <form action="" method="post">
             <div class="form-group mb-2"><?= $form->field('category', 'categorie', ['holder' => 'Entrer une categorie']) ?></div>
-            <div class="form-group mb-2"><?= $form->field('slug', 'slug', ['holder' => 'Entrer un url']) ?></div>
             <div class="form-group mb-2"><?= $form->field('createAt', 'createAt', ['holder' => 'date de création']) ?></div>
             <?= $form->submit('Editer') ?>
         </form>
