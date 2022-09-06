@@ -15,3 +15,5 @@ Créer un blog avec un système de categorie
     [x] Ajouter une relation
 
 [x] Système d'authentification
+    [x] login (se connecter)
+    [x] se deconnecter 

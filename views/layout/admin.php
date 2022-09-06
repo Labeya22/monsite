@@ -17,14 +17,15 @@
 
         <div class="collapse navbar-collapse justify-content-md-center" id="navbar">
             <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">Adminer</a>
-            </li>
-           
-            <?= li($router->generateUri('admin.index'), 'Accueil') ?>
-            <?= li($router->generateUri('admin.posts.index'), 'Articles') ?>
-            <?= li($router->generateUri('admin.categories.index'), 'Categories') ?>
-            <?= li($router->generateUri('admin.relations.index'), 'Relations') ?>
+                <?= li($router->generateUri('admin.index'), 'Accueil') ?>
+                <?= li($router->generateUri('admin.posts.index'), 'Articles') ?>
+                <?= li($router->generateUri('admin.categories.index'), 'Categories') ?>
+                <?= li($router->generateUri('admin.relations.index'), 'Relations') ?>
+                <li class="nav-item">
+                    <form action="<?= $router->generateUri('auth.logout') ?>" method="post" style="display: inline-block;" class="nav-link">
+                        <button type="submit" onclick="return confirm('Voulez-vous vraiment vous deconnecter ?')" style="border: none;background-color: inherit; color: inherit;">Se déconnecter</button>
+                    </form>
+                </li>
             </ul>
         </div>
         </div>

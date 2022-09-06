@@ -18,6 +18,11 @@ class Auth
         self::$router = $router;
     }
 
+    static function remove($key): void
+    {
+        unset($_SESSION[$key]);
+    }
+
     static function instance(): self
     {
         if (is_null(self::$instance)) {

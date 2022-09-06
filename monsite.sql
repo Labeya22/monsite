@@ -5,15 +5,6 @@
 
 use monsite;
 
-DROP TABLE categories;
-DROP TABLE posts;
-
-DROP TABLE post_category;
-
-
-
--- posts
-
 
 CREATE TABLE posts (
     id VARCHAR(20) NOT NULL PRIMARY KEY,
@@ -44,3 +35,5 @@ CREATE TABLE user (
     password VARCHAR(255) NOT NULL
 );
 
+INSERT INTO `user` (`id`, `username`, `password`) VALUES ('USYvwf1pSad56hsgnqL9bBoB', 'admin123', '$2y$10$loRJZ9ACLL3qZhvt5bdJy.rrfFuCzjYxtep.TD5iroKKqZ64l6qqC');
+Z

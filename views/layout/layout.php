@@ -21,6 +21,7 @@
             </li>
            
             <?= li($router->generateUri('blog.index'), 'Article') ?>
+            <?= li($router->generateUri('admin.index'), 'Administration') ?>
             </ul>
         </div>
         </div>

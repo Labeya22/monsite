@@ -1,5 +1,7 @@
 <?php
 
+use App\Exceptions\NotFoundException;
+use App\Exceptions\RouterException;
 use App\Renderer\Renderer;
 use App\Routes\Router;
 use Modules\{AdminModule, UserModule, BlogModule, CategoryModule};
@@ -27,6 +29,31 @@ foreach ([
     new $module($render, $router);
 }
 
-$router->run();
+try {
+    $router->run();
+} catch (RouterException $e) {
+    $error = [
+        'message' => $e->getMessage(),
+        'desc' => 'Page introuvable',
+        'error' => '404'
+    ];
+    $render->render('/error/error', compact('error'), 'error');
+} catch (NotFoundException $e) {
+    $error = [
+        'message' => $e->getMessage(),
+        'desc' => '',
+        'error' => 'Element introuvable'
+    ];
+    $render->render('/error/error', compact('error'), 'error');
+} catch (Exception $e) {
+    $error = [
+        'message' => $e->getMessage(),
+        'desc' => 'Une erreur est survenue ',
+        'error' => 'Erreur'
+    ];
+    $render->render('/error/error', compact('error'), 'error');
+}
+
+
 
 

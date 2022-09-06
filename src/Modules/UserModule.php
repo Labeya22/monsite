@@ -39,6 +39,7 @@ class UserModule {
 
 
         $this->router->both('/login', [$this, 'login'], 'auth.index');
+        $this->router->both('/logout', [$this, 'logout'], 'auth.logout');
 
 
         $this->user = new UserTable(Config::getPDO());
@@ -81,5 +82,13 @@ class UserModule {
         }
 
         return $this->renderer->render('user/index', compact('user', 'errors'), 'user');
+    }
+
+    public function logout()
+    {
+        Auth::check();
+        Auth::remove('auth');
+        Flash::instance()->write('success', 'Vous êtes déconnecter');
+        r($this->router->generateUri('auth.index'));
     }
 }
