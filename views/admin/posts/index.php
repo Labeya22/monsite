@@ -16,7 +16,6 @@ $title = 'administration des articles';
             <thead>
                 <tr>
                     <th>Titre</th>
-                    <th>Actions</th>
                     <td><a href="<?= $router->generateUri('admin.post.create')?>" class="btn btn-primary btn-sm">Nouveau</a></td>
 
                 </tr>

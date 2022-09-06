@@ -62,6 +62,9 @@ class Form
         } elseif ($type === 'select') {    
             $options = $this->options($database, $placeholder, $value);    
             $input = $this->select($key, $options,  $has, $error);
+        } elseif ($type === 'checkbox') {
+            $v = $attributes['value'] ?? '';    
+            return $this->checkbox($key, $v, $label);
         }
 
         return "<label for=\"$key\"> $label </label>$input";
@@ -99,5 +102,14 @@ class Form
     public function submit ($value, $color = 'primary'): string
     {
         return "<button type=\"submit\" class=\"btn-sm btn btn-$color mt-3 mb-3\">$value</button>";
+    }
+
+    public function checkbox($key, $value, $remember): string
+    {
+        return 
+        "<div class=\"form-check form-switch\">
+            <input class=\"form-check-input\" type=\"checkbox\" id=\"{$key}\" name=\"{$key}\" value=\"{$value}\">
+            <label for=\"$key\" class=\"text-muted\"> {$remember} </label>
+        </div>";
     }
 }

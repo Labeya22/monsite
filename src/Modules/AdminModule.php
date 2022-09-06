@@ -2,7 +2,7 @@
 
 namespace Modules;
 
-
+use App\Auth;
 use App\Flash;
 use Mapping\{Post, Category, PostCategory};
 use Config\Config;
@@ -50,6 +50,8 @@ class AdminModule {
         $this->renderer = $render;
         $this->router = $router;
 
+        $this->router->get('/admin/index.html', [$this, 'index'], 'admin.index');
+
         // POSTS
         $this->router->get('/admin/posts.html', [$this, 'posts'], 'admin.posts.index');
         $this->router->get('/admin/posts/post-:id.html', [$this, 'post'], 'admin.posts.show')->regex('id', "[a-zA-Z0-9]+");
@@ -75,11 +77,25 @@ class AdminModule {
         $this->post = new postTable(Config::getPDO());
         $this->category = new CategoryTable(Config::getPDO());
         $this->relation = new PostCategoryTable(Config::getPDO());
+
+        Auth::route($this->router);
+
+
+
+
         
+    }
+
+    public function index()
+    {
+        Auth::check();
+        return $this->renderer->render('admin/index', [], 'admin');
     }
 
     public function posts ()
     {
+        Auth::check();
+
         $pagine = $this->post->findPagine(['page' => getParams('page')]);
         $posts = $pagine->pagine();
         $paginate = $pagine->i(3);
@@ -88,6 +104,8 @@ class AdminModule {
 
     public function post (string $id)
     {
+        Auth::check();
+
         $post = $this->post->find('id', $id);
         if (empty($post)) {
             throw new NotFoundException("Nous avons pas pu trouver l'article #$id");
@@ -98,6 +116,8 @@ class AdminModule {
 
     public function post_delete(string $id)
     {
+        Auth::check();
+
         $post = $this->post->find('id', $id);
         if (empty($post)) {
             throw new NotFoundException("Nous avons pas pu trouver l'article #$id");
@@ -116,6 +136,8 @@ class AdminModule {
   
     public function post_editer(string $id)
     {
+        Auth::check();
+
         $post = $this->post->find('id', $id);
         if (empty($post)) {
             throw new NotFoundException("Nous avons pas pu trouver l'article #$id");
@@ -142,6 +164,8 @@ class AdminModule {
 
     public function post_create()
     {
+        Auth::check();
+
         $post = new Post();
         $errors = [];
         if (!empty($_POST)) {
@@ -165,6 +189,8 @@ class AdminModule {
 
     public function categories()
     {
+        Auth::check();
+
         $pagine = $this->category->findPagineCategory(['page' => getParams('page')]);
         $categories = $pagine->pagine();
         $paginate = $pagine->i(3);
@@ -173,6 +199,8 @@ class AdminModule {
 
     public function category(string $id)
     {
+        Auth::check();
+
         $category = $this->category->find('id', $id);
         if (empty($category)) {
             throw new NotFoundException("Nous avons pas pu trouver la categorie #$id");
@@ -182,6 +210,8 @@ class AdminModule {
 
     public function category_delete(string $id)
     {
+        Auth::check();
+
         $category = $this->category->find('id', $id);
         if (empty($category)) {
             throw new NotFoundException("Nous avons pas pu trouver la categorie #$id");
@@ -198,6 +228,8 @@ class AdminModule {
 
     public function category_editer(string $id)
     {
+        Auth::check();
+
         $category = $this->category->find('id', $id);
         if (empty($category)) {
             throw new NotFoundException("Nous avons pas pu trouver la categorie #$id");
@@ -225,6 +257,8 @@ class AdminModule {
 
     public function category_create()
     {
+        Auth::check();
+
         $errors = [];
         $category = new Category();
         if (!empty($_POST)) {
@@ -248,6 +282,8 @@ class AdminModule {
 
     public function relations()
     {   
+        Auth::check();
+
         $pagine = $this->relation->findPagine(['page' => getParams('page')]);
         $relations = $pagine->pagine();
         $paginate = $pagine->i(4);
@@ -257,6 +293,8 @@ class AdminModule {
 
     public function relation_create()
     {
+        Auth::check();
+
         $errors = [];
         $relation = new PostCategory;
 
@@ -286,6 +324,8 @@ class AdminModule {
 
     public function relation_delete(string $id)
     {
+        Auth::check();
+
         $relation = $this->relation->find('id', $id);
         if (empty($relation)) {
             throw new NotFoundException("Nous avons pas pu trouver la relation #$id");
@@ -302,6 +342,8 @@ class AdminModule {
 
     public function relation_editer(string $id)
     {
+        Auth::check();
+
         $relation = $this->relation->find('id', $id);
         if (empty($relation)) {
             throw new NotFoundException("Nous avons pas pu trouver la relation #$id");

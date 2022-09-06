@@ -21,6 +21,7 @@
                 <a class="nav-link" aria-current="page" href="#">Adminer</a>
             </li>
            
+            <?= li($router->generateUri('admin.index'), 'Accueil') ?>
             <?= li($router->generateUri('admin.posts.index'), 'Articles') ?>
             <?= li($router->generateUri('admin.categories.index'), 'Categories') ?>
             <?= li($router->generateUri('admin.relations.index'), 'Relations') ?>

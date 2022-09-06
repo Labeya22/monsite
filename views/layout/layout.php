@@ -29,7 +29,6 @@
         <?= $content ?>
     </div>
 
-
     <script src="<?=  S . "js/bootstrap.bundle.js" ?>"></script>
     <script src="<?=  S . "js/bootstrap.min.js" ?>"></script>
     <script src="<?=  S . "js/app.js" ?>"></script>

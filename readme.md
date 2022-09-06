@@ -14,4 +14,4 @@ Créer un blog avec un système de categorie
     [x] modifier la relation
     [x] Ajouter une relation
 
-[] Système d'authentification
+[x] Système d'authentification

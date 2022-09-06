@@ -56,12 +56,10 @@ function category_assoc_generate (array $categories, Router $router): ?string
         $link = $router->generateUri('category.show', [
             'category' => $category->getId()
         ]);
-        return <<< HTML
-        <a href="{$link}"> {$category->getCategory()} </a>
-HTML;
+        return "<a href=\"{$link}\" class=\"badge bg-secondary mb-2\" style=\"text-decoration:none; color: #fff;\"> {$category->getCategory()} </a>";
     }, $categories);
     
-    return implode(', ', $links);
+    return implode(' ', $links);
 }
 
 function li ($link, $title): string {
